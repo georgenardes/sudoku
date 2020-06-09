@@ -1,19 +1,26 @@
 #include <iostream>
+<<<<<<< HEAD
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+=======
+#include <math.h>
+>>>>>>> fa15821759839fc463479e586ac3207496dd3ee8
 
 using namespace std;
 int TAM = 0; // variavel global do tamanho da matriz
 
+<<<<<<< HEAD
 void pausa(){
     cout << "\n\n\n *** ";
     system("PAUSE");
 }
 
 
+=======
+>>>>>>> fa15821759839fc463479e586ac3207496dd3ee8
 bool **Alocar_matriz_real (int qtdVert){
     bool** matriz = new bool*[qtdVert];
 
@@ -41,6 +48,7 @@ bool verificaLinha(int **mat, int qtd_vert, int x, int y, int cor){
    return true;
 }
 
+<<<<<<< HEAD
 
 void monta_matriz_adj(bool **_matrizAdjacencia, int qtd_vert){
     // quantidade de linhas/colunas do sudoku
@@ -196,6 +204,42 @@ void menu(){
 int main()
 {
     //menu();
+=======
+
+void monta_matriz_adj(bool **_matrizAdjacencia, int qtd_vert){
+    // quantidade de linhas/colunas do sudoku
+    int _ordem = sqrt(qtd_vert);
+
+    // quantidade de linhas de um quadrante
+    int _ordem0 = sqrt(_ordem);
+
+    for (int i = 0; i < qtd_vert; i++){
+        for (int j = 0; j < qtd_vert; j++){
+            if (j >= (i / _ordem) * _ordem && j < (i / _ordem) * _ordem + _ordem)
+                _matrizAdjacencia[i][j] = 1;
+            else if (j % _ordem == i % _ordem)
+                _matrizAdjacencia[i][j] = 1;
+            else
+                _matrizAdjacencia[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < qtd_vert; i++){
+        for (int f = 0; f < _ordem0; f++){
+            for (int k = 0; k < _ordem0; k++){
+                if ((i / _ordem) % _ordem0 == 0)
+                    for (int j = 0; j < _ordem0; j++){
+                        _matrizAdjacencia[i + _ordem * f][(i / _ordem0) * _ordem0 + j + _ordem * k] = 1;
+                    }
+            }
+        }
+    }
+}
+
+
+int main()
+{
+>>>>>>> fa15821759839fc463479e586ac3207496dd3ee8
     int qtd_vert = 16;
 
     bool **_matrizAdjacencia; // matriz adjacencia
