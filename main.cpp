@@ -115,83 +115,78 @@ void menu(){
 
 		switch (op) {
 
-			case 0:{
-
-				cout << "\nPrograma finalizado!\n\n\n";
-				pausa();
-
-				break;
-			}
-			case 1:{
-
-    int opcao;
-        system("CLS");
-
-        cout << "Selecione o tamanho da matriz desejada: " << endl;
-        cout << "1 - Matriz 4x4." << endl;
-        cout << "2 - Matriz 9x9." << endl;
-        cout << "3 - Matriz 16x16." << endl;
-        cout << "4 - Voltar;" << endl;
-        cin >> opcao;
-
-    switch(opcao){
-        case 1:
-            TAM = 4;
-            //criaMatriz();
+        case 0:{
+            cout << "\nPrograma finalizado!\n\n\n";
+            pausa();
             break;
-        case 2:
-            TAM = 9;
-//            criaMatriz();
+        }
+        case 1:{
+            int opcao;
+            system("CLS");
+            cout << "Selecione o tamanho da matriz desejada: " << endl;
+            cout << "1 - Matriz 4x4." << endl;
+            cout << "2 - Matriz 9x9." << endl;
+            cout << "3 - Matriz 16x16." << endl;
+            cout << "4 - Voltar;" << endl;
+            cin >> opcao;
+            switch(opcao){
+            case 1:{
+                TAM = 4;
+                //criaMatriz();
+                break;
+                }
+            case 2:{
+                TAM = 9;
+        //      criaMatriz();
+                break;
+                }
+            case 3:{
+                TAM = 16;
+          //    criaMatriz();
+                break;
+                }
+            case 4:{
+                system("CLS");
+                break;
+                }
+            default:{
 
-            break;
-        case 3:
-            TAM = 16;
-  //          criaMatriz();
-
-        case 4:
+                }
+            }
             system("CLS");
 
+            /*int linha, coluna;
+            // matriz teste zerada
+            int matriz[TAM][TAM];
 
-            break;
-        default: {
-
-                 }
-        }
-    system("CLS");
-
-    /*int linha, coluna;
-    // matriz teste zerada
-    int matriz[TAM][TAM];
-
-    for(int i = 0; i < TAM; i++)
-        for(int j = 0; j < TAM; j++)
-            matriz[i][j] = 0;
-*/
+            for(int i = 0; i < TAM; i++)
+                for(int j = 0; j < TAM; j++)
+                    matriz[i][j] = 0;
+        */
 
             break;
 
         }
-			case 2:{
+        case 2:{
 
-    srand(time(NULL));
+            srand(time(NULL));
+            // matriz teste zerada
+            int matriz[TAM][TAM];
 
-    // matriz teste zerada
-    int matriz[TAM][TAM];
-
-    for(int i = 0; i < TAM; i++)
-        for(int j = 0; j < TAM; j++)
-            matriz[i][j] = 0;
-    pausa();
-			    break;
-		}
-			case 3:
-			    cout << "-------Desenvolvedores------\n" <<endl;
-			    cout << "Diogo Marchi" << endl;
-			    cout << "George de Borba" << endl;
-			    cout << "Leonardo Grando";
-			    pausa();
-                break;
-
+            for(int i = 0; i < TAM; i++)
+                for(int j = 0; j < TAM; j++)
+                    matriz[i][j] = 0;
+            pausa();
+            break;
+        }
+        case 3:{
+            cout << "-------Desenvolvedores------\n" <<endl;
+            cout << "Diogo Marchi" << endl;
+            cout << "George de Borba" << endl;
+            cout << "Leonardo Grando";
+            pausa();
+            break;
+        }
         default: {
 
 			}
@@ -201,10 +196,7 @@ void menu(){
 	}while(op!=0);
 
 }
-int main()
-{
-    //menu();
-=======
+
 
 void monta_matriz_adj(bool **_matrizAdjacencia, int qtd_vert){
     // quantidade de linhas/colunas do sudoku
