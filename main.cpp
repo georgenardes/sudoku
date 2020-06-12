@@ -4,19 +4,17 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-
-#include <math.h>
-
+#include <stdbool.h>
 
 using namespace std;
-int TAM = 0; // variavel global do tamanho da matriz
 
+void printSolucao(int **matrizFinal, int maximo);
+void montaMatrizFinal(int *color, int qtd_vert);
 
 void pausa(){
     cout << "\n\n\n *** ";
     system("PAUSE");
 }
-
 
 int **Alocar_matriz_real (int qtdVert){
     int **matriz = new int*[qtdVert];
@@ -27,30 +25,10 @@ int **Alocar_matriz_real (int qtdVert){
     return (matriz);
 }
 
-int **Alocar_vetor_real( int qtd_Cor){
-    int *vet_Cor = new int*[qtd_Cor];
-    return (vet_Cor);
+int *Alocar_vetor_real( int qtd_vert){
+    int *color = new int [qtd_vert];
+    return (color);
 }
-
-bool verificaColuna(int **mat, int qtd_vert, int x, int y, int cor){
-
-   for(int i = 0; i < qtd_vert; i ++){
-        if(mat[i][y] == cor)
-            return false;
-   }
-   return true;
-}
-
-bool verificaLinha(int **mat, int qtd_vert, int x, int y, int cor){
-
-   for(int i = 0; i < qtd_vert; i ++){
-        if(mat[x][i] == cor)
-            return false;
-   }
-   return true;
-}
-
-
 
 void monta_matriz_adj(int **_matrizAdjacencia, int qtd_vert){
     // quantidade de linhas/colunas do sudoku
@@ -82,6 +60,90 @@ void monta_matriz_adj(int **_matrizAdjacencia, int qtd_vert){
     }
 }
 
+bool isSafe(int v, int **_matrizAdjacencia, int qtd_vert, int color[], int c)//ve se é seguro
+{
+    for (int i = 0; i < qtd_vert; i++)
+        if (_matrizAdjacencia[v][i] == 1 && c == color[i])//ve se tem adjacencia e se  cor estabelecida ja esta no lugar da adjacencia
+            return false;
+    return true;
+}
+
+bool graphColoringUtil(int **_matrizAdjacencia, int qtd_vert, int m,int *color, int v)
+{
+    if (v == qtd_vert)//se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
+        return true;
+
+    for (int c = 1; c <= m; c++) {//for para a quantidade de cores
+        if (isSafe(v, _matrizAdjacencia, qtd_vert, color, c)) {//se seguro
+                color[v] = c;//posição do vetor recebe a cor
+            if (graphColoringUtil(_matrizAdjacencia,qtd_vert, m, color, v + 1) == true)
+                return true;
+            color[v] = 0;
+        }
+    }
+    return false;
+}
+
+//zera vetor
+void zera_vetor(int *vet, int maximo){
+    for (int i = 0; i < maximo; i++)
+        vet[i] = 0;
+}
+
+//colore grafo
+bool graphColoring(int **_matrizAdjacencia, int qtd_vert, int m)
+{
+    int *color;//vetor de cores
+    color = Alocar_vetor_real(qtd_vert);//aloca vetor
+    zera_vetor(color, qtd_vert);//zera o vetor
+
+    // chama função graphColoringUtil
+    if (graphColoringUtil(_matrizAdjacencia, qtd_vert, m, color, 0) == false) {//se retornar falso
+        printf("Solucao nao existe");//printa que nao existe solução
+        return false;//retorna falso
+    }
+
+    // caso contrario monta solução
+    montaMatrizFinal(color, qtd_vert);
+    return true;
+}
+
+void zeraMatriz(int **mat, int maximo){// zerando matriz
+    for (int i = 0; i < maximo; i++)
+        for (int j = 0; j < maximo; j++)
+            mat[i][j] = 0;
+}
+
+void montaMatrizFinal(int *color, int qtd_vert){//tranforma o vetor na matriz final
+    int i = 0, j = 0;
+    int maximo = sqrt(qtd_vert);//saber o valor da matriz inicial no caso, raiz quadrada
+    int contador = 0;//contador pro vetor de cores
+    int **matrizFinal;
+    matrizFinal = Alocar_matriz_real(maximo);//aloca matriz final
+    zeraMatriz(matrizFinal, maximo);//zera matriz
+
+    for(i = 0; i < maximo; i ++){//trnscreve valor do vetor de cores pra matriz final
+        for(j = 0; j < maximo; j ++){
+            matrizFinal[i][j] = color[contador];
+            contador++;
+        }
+    }
+    printSolucao(matrizFinal, maximo);
+}
+
+/* printa o sudoku final */
+void printSolucao(int **matrizFinal, int maximo)
+{
+    printf("Matriz final do SUDOKU \n \n");
+    for (int i = 0; i < maximo; i++){
+        for(int j = 0; j < maximo; j ++){
+            printf(" %d ", matrizFinal[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+/* tentativa diogo kkk
 void coloreMatriz(int **_matrizAdjacencia, int qtd_vert, int *vetCor, int qtd_Cor, int valor_X, int valor_Y, int vet_Vertices){
     vet_Vertices[valor_Y] = vetCor[0];//coluna especificada pelo usuario recebendo primeira cor do vetor
     int go = 1;//variavel do while
@@ -94,13 +156,6 @@ void coloreMatriz(int **_matrizAdjacencia, int qtd_vert, int *vetCor, int qtd_Co
             }
         }
 
-
-
-
-
-
-
-
         if(x == qtd_vert)//se chegou no final, volta ao inicio
             x = 0;
         go = 0;//força saida do while
@@ -112,27 +167,9 @@ void coloreMatriz(int **_matrizAdjacencia, int qtd_vert, int *vetCor, int qtd_Co
     }
 
 
-}
-
-/*void criaMatriz(){
-
-    int **mat;
-    mat = Alocar_matriz_real(TAM);
-
-    for (int i = 0; i < TAM; i++)// zerando matriz
-        for (int j = 0; j < TAM; j++)
-            mat[i][j] = 0;
-    system("cls");
-
-    for(int i = 0; i < TAM; i++){       // print matriz
-        cout << "\n";
-        for(int j = 0; j < TAM; j++)
-            cout << " " << mat[i][j];
-    }
-    pausa();
-
 }*/
 
+/*
 void menu(){
     int op;
     do{
@@ -196,7 +233,7 @@ void menu(){
             for(int i = 0; i < TAM; i++)
                 for(int j = 0; j < TAM; j++)
                     matriz[i][j] = 0;
-        */
+
 
             break;
 
@@ -230,46 +267,21 @@ void menu(){
 	}while(op!=0);
 
 }
+*/
 
 int main()
 {
+    int qtd_vert = 81;
 
-    int qtd_Cor = 4;
-    int qtd_vert = 16;
-
-    int valor_inicial_X = 2;
-    int valor_inicial_Y = 3;
-
-    int *vet_Cor;
-    int *vet_Vertices;
     int **_matrizAdjacencia; // matriz adjacencia
+    _matrizAdjacencia = Alocar_matriz_real(qtd_vert);//aloca matriz
 
-    vet_Vertices = Alocar_vetor_real(qtd_vert);
-    vet_Cor = Alocar_vetor_real(qtd_Cor);
-    _matrizAdjacencia = Alocar_matriz_real(qtd_vert);
+    zeraMatriz(_matrizAdjacencia, qtd_vert);//zera matriz
 
-    for (int j = 0; j < qtd_vert; j++)//zerando vetor de vertices
-        vet_Vertices[j] = 0;
+    monta_matriz_adj(_matrizAdjacencia, qtd_vert);//monta matriz adjacencia
 
-    for (int j = 0; j < qtd_Cor; j++)//colocando numero das cores no vetor
-        vet_Cor[j] = i+1;
-
-    for (int i = 0; i < qtd_vert; i++)// zerando matriz
-        for (int j = 0; j < qtd_vert; j++)
-            _matrizAdjacencia[i][j] = 0;
-
-    monta_matriz_adj(_matrizAdjacencia, qtd_vert);
-    coloreMatriz(_matrizAdjacencia, qtd_vert, vet_Cor, qtd_Cor, valor_inicial_X, valor_inicial_Y, vet_Vertices);
-
-    // ------------ printa matriz ---------------- //
-    int i = 0;
-    int j = 0;
-    cout<< " --------- Matriz de adjacencia --------- "<<endl;
-    for (i=0; i < qtd_vert; i++){
-        for (j=0; j < qtd_vert; j++)
-            cout << _matrizAdjacencia[i][j] << " ";
-        cout << endl;
-    }
+    int m = 9; // quantidade de cores
+    graphColoring(_matrizAdjacencia, qtd_vert, m);//começa colorir
 
     return 0;
 }
