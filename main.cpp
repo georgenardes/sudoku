@@ -144,33 +144,6 @@ void printSolucao(int **matrizFinal, int maximo)
     pausa();
 }
 
-/* tentativa diogo kkk
-void coloreMatriz(int **_matrizAdjacencia, int qtd_vert, int *vetCor, int qtd_Cor, int valor_X, int valor_Y, int vet_Vertices){
-    vet_Vertices[valor_Y] = vetCor[0];//coluna especificada pelo usuario recebendo primeira cor do vetor
-    int go = 1;//variavel do while
-    int x = valor_X;
-    while(go = 1){
-        x += 1;//continuar a partir da linha que usuario mandou
-        for(int i = 0; i < qtd_vert; i ++){//percorre a linha inteira
-            if(_matrizAdjacencia[x][i] == 1){//houve adjacencia da linha com a coluna i
-                if(vet_Vertices[i] != 0)//verifica se a coluna ja tem cor, se sim, descarta essa cor para essa linha
-            }
-        }
-
-        if(x == qtd_vert)//se chegou no final, volta ao inicio
-            x = 0;
-        go = 0;//força saida do while
-        for(int i = 0; i < qtd_vert; i ++){//testa se o vetor esta cheio, caso contrario faz while de novo
-            if(vet_Vertices[i] == 0){
-                go = 1;
-            }
-        }
-    }
-
-
-}*/
-
-
 void menu(){
     int op;
     int **_matrizAdjacencia; // matriz adjacencia
