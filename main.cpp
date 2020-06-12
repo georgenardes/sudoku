@@ -141,6 +141,7 @@ void printSolucao(int **matrizFinal, int maximo)
         }
         printf("\n");
     }
+    pausa();
 }
 
 /* tentativa diogo kkk
@@ -169,15 +170,15 @@ void coloreMatriz(int **_matrizAdjacencia, int qtd_vert, int *vetCor, int qtd_Co
 
 }*/
 
-/*
+
 void menu(){
     int op;
+    int **_matrizAdjacencia; // matriz adjacencia
     do{
 
         cout << "\n ------------ MENU ------------ \n\n";
-        cout << "1 - Informar posicao inicial da matriz: \n";
-        cout << "2 - Solucao todos os casos: \n";  // TODO
-        cout << "3 - Desenvolvedores: \n";      // TODO
+        cout << "1 - Informar o tamanho do sudoku: \n";
+        cout << "2 - Desenvolvedores: \n";      // TODO
         cout << "0 - Finalizar o programa \n\n";
         cout << "Informe a opcao desejada: ";
 
@@ -201,23 +202,39 @@ void menu(){
             cout << "4 - Voltar;" << endl;
             cin >> opcao;
             switch(opcao){
-            case 1:{
-                TAM = 4;
-                //criaMatriz();
+            case 1:{//se for 4x4
+                int qtd_vert = 4*4, m = 4;
+                _matrizAdjacencia = Alocar_matriz_real(qtd_vert);//aloca matriz
+
+                zeraMatriz(_matrizAdjacencia, qtd_vert);//zera matriz
+
+                monta_matriz_adj(_matrizAdjacencia, qtd_vert);//monta matriz adjacencia
+                graphColoring(_matrizAdjacencia, qtd_vert, m);//começa colorir
                 break;
                 }
             case 2:{
-                TAM = 9;
-        //      criaMatriz();
+                int qtd_vert = 9*9, m = 9;
+                _matrizAdjacencia = Alocar_matriz_real(qtd_vert);//aloca matriz
+
+                zeraMatriz(_matrizAdjacencia, qtd_vert);//zera matriz
+
+                monta_matriz_adj(_matrizAdjacencia, qtd_vert);//monta matriz adjacencia
+                graphColoring(_matrizAdjacencia, qtd_vert, m);//começa colorir
                 break;
                 }
             case 3:{
-                TAM = 16;
-          //    criaMatriz();
+                int qtd_vert = 16*16, m = 16;
+                _matrizAdjacencia = Alocar_matriz_real(qtd_vert);//aloca matriz
+
+                zeraMatriz(_matrizAdjacencia, qtd_vert);//zera matriz
+
+                monta_matriz_adj(_matrizAdjacencia, qtd_vert);//monta matriz adjacencia
+                graphColoring(_matrizAdjacencia, qtd_vert, m);//começa colorir
                 break;
                 }
             case 4:{
                 system("CLS");
+                menu();
                 break;
                 }
             default:{
@@ -225,32 +242,11 @@ void menu(){
                 }
             }
             system("CLS");
-
-            /*int linha, coluna;
-            // matriz teste zerada
-            int matriz[TAM][TAM];
-
-            for(int i = 0; i < TAM; i++)
-                for(int j = 0; j < TAM; j++)
-                    matriz[i][j] = 0;
-
-
             break;
 
         }
         case 2:{
-
-            srand(time(NULL));
-            // matriz teste zerada
-            int matriz[TAM][TAM];
-
-            for(int i = 0; i < TAM; i++)
-                for(int j = 0; j < TAM; j++)
-                    matriz[i][j] = 0;
-            pausa();
-            break;
-        }
-        case 3:{
+            system("CLS");
             cout << "-------Desenvolvedores------\n" <<endl;
             cout << "Diogo Marchi" << endl;
             cout << "George de Borba" << endl;
@@ -267,21 +263,10 @@ void menu(){
 	}while(op!=0);
 
 }
-*/
+
 
 int main()
 {
-    int qtd_vert = 81;
-
-    int **_matrizAdjacencia; // matriz adjacencia
-    _matrizAdjacencia = Alocar_matriz_real(qtd_vert);//aloca matriz
-
-    zeraMatriz(_matrizAdjacencia, qtd_vert);//zera matriz
-
-    monta_matriz_adj(_matrizAdjacencia, qtd_vert);//monta matriz adjacencia
-
-    int m = 9; // quantidade de cores
-    graphColoring(_matrizAdjacencia, qtd_vert, m);//começa colorir
-
+    menu();
     return 0;
 }
