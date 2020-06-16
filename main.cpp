@@ -10,7 +10,7 @@
 using namespace std;
 
 
-void printSolucao(int **matrizFinal, int maximo);
+void printSolucao(int **matrizFinal, int ordem);
 void montaMatrizFinal(int *color, int qtd_vert);
 
 typedef enum{BLACK,BLUE,GREEN,CYAN,RED,MAGENTA,BROWN,LIGHTGRAY,DARKGRAY,   /* nome das cores */
@@ -80,85 +80,83 @@ void monta_matriz_adj(int **_matrizAdjacencia, int qtd_vert){
     }
 }
 
-bool isSafe(int v, int **_matrizAdjacencia, int qtd_vert, int color[], int c)//ve se é seguro
+bool disponivel(int v, int **_matrizAdjacencia, int qtd_vert, int vertices[], int cor)//ve se a cor é disponivel
 {
     for (int i = 0; i < qtd_vert; i++)
-        if (_matrizAdjacencia[v][i] == 1 && c == color[i])//ve se tem adjacencia e se  cor estabelecida ja esta no lugar da adjacencia
+        if (_matrizAdjacencia[v][i] == 1 && cor == vertices[i])//ve se tem adjacencia e se  cor estabelecida ja esta no lugar da adjacencia
             return false;
     return true;
 }
 
 //colore grafo
-bool graphColoringUtil(int **_matrizAdjacencia, int qtd_vert, int m,int *color, int v)
+bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *vertices, int v)
 {
-    if(v == qtd_vert)//se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
+    if(v == qtd_vert)                                                  //se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
         return true;
 
-    for (int c = 1; c <= m; c++) {                             //for para a quantidade de cores
-        if (isSafe(v, _matrizAdjacencia, qtd_vert, color, c)) {//se seguro
-            if(color[v] == 0)
-                color[v] = c;                                  //posição do vetor recebe a cor
+    for (int c = 1; c <= qtd_cores; c++) {                             //for para a quantidade de cores
+        if (disponivel(v, _matrizAdjacencia, qtd_vert, vertices, c)) {     //se seguro
+            if(vertices[v] == 0)
+                vertices[v] = c;                                       //posição do vetor recebe a cor
 
-            if (graphColoringUtil(_matrizAdjacencia,qtd_vert, m, color, v + 1) == true){
+            if (coloreGrafo(_matrizAdjacencia,qtd_vert, qtd_cores, vertices, v + 1) == true){
                 return true;
             }
-            color[v] = 0;
-
+            vertices[v] = 0;
         }
     }
     return false;
 }
 
 //zera vetor
-void zera_vetor(int *vet, int maximo){
-    for (int i = 0; i < maximo; i++)
-        vet[i] = 0;
+void zera_vetor(int *vertices, int ordem){
+    for (int i = 0; i < ordem; i++)
+        vertices[i] = 0;
 }
 
-bool graphColoring(int **_matrizAdjacencia, int qtd_vert, int m, int pos)
+bool verificaColoracao(int **_matrizAdjacencia, int qtd_vert, int qtd_cores, int pos)
 {
-    int *color;                         //vetor de cores
-    color = Alocar_vetor_real(qtd_vert);//aloca vetor
-    zera_vetor(color, qtd_vert);        //zera o vetor
+    int *vertices;                                                                         //vetor de cores
+    vertices = Alocar_vetor_real(qtd_vert);                                                //aloca vetor
+    zera_vetor(vertices, qtd_vert);                                                        //zera o vetor
 
-    color[pos] = 1;
+    vertices[pos] = 1;
 
-    if (graphColoringUtil(_matrizAdjacencia, qtd_vert, m, color, 0) == false) {         //se retornar falso
+    if (coloreGrafo(_matrizAdjacencia, qtd_vert, qtd_cores, vertices, 0) == false) {         //se retornar falso
         printf("Solucao nao existe");                                                   //printa que nao existe solução
         pausa();
         return false;                                                                   //retorna falso
     }
 
-    // caso contrario monta solução
-    montaMatrizFinal(color, qtd_vert);
+                                                                                        // caso contrario monta solução
+    montaMatrizFinal(vertices, qtd_vert);
     return true;
 }
 
-void zeraMatriz(int **mat, int maximo){// zerando matriz
-    for (int i = 0; i < maximo; i++)
-        for (int j = 0; j < maximo; j++)
+void zeraMatriz(int **mat, int ordem){// zerando matriz
+    for (int i = 0; i < ordem; i++)
+        for (int j = 0; j < ordem; j++)
             mat[i][j] = 0;
 }
 
 void montaMatrizFinal(int *color, int qtd_vert){//tranforma o vetor na matriz final
-    int i = 0, j = 0;
-    int maximo = sqrt(qtd_vert);//saber o valor da matriz inicial no caso, raiz quadrada
-    int contador = 0;//contador pro vetor de cores
+    int ordem = sqrt(qtd_vert);                 //saber o valor da matriz inicial no caso, raiz quadrada
+    int contador = 0;                           //contador pro vetor de cores
     int **matrizFinal;
-    matrizFinal = Alocar_matriz_real(maximo);//aloca matriz final
-    zeraMatriz(matrizFinal, maximo);//zera matriz
+    matrizFinal = Alocar_matriz_real(ordem);    //aloca matriz final
+    zeraMatriz(matrizFinal, ordem);             //zera matriz
 
-    for(i = 0; i < maximo; i ++){//trnscreve valor do vetor de cores pra matriz final
-        for(j = 0; j < maximo; j ++){
+    for(int i = 0; i < ordem; i ++){            //transcreve valor do vetor de cores pra matriz final
+        for(int j = 0; j < ordem; j ++){
             matrizFinal[i][j] = color[contador];
             contador++;
         }
     }
-    printSolucao(matrizFinal, maximo);
+    printSolucao(matrizFinal, ordem);
 }
 
 /* printa o sudoku final */
-void printSolucao(int **matrizFinal, int maximo)
+void printSolucao(int **matrizFinal, int ordem)
 {
     //numero:cor
     //1 : preto
@@ -178,31 +176,31 @@ void printSolucao(int **matrizFinal, int maximo)
     //15: amarelo
     //16: branco
 
-    int tam_quadrante = (int)sqrt(maximo);
+    int tam_quadrante = (int)sqrt(ordem);
     int qtd_pontilhado = 0;
 
-    if(maximo == 4) qtd_pontilhado = 30;
-    else if(maximo == 9) qtd_pontilhado = 70;
-    else if(maximo == 16) qtd_pontilhado = 130;
+    if(ordem == 4) qtd_pontilhado = 30;
+    else if(ordem == 9) qtd_pontilhado = 70;
+    else if(ordem == 16) qtd_pontilhado = 130;
 
 
-    printf("Matriz final do SUDOKU \n \n");
-    for (int i = 0; i < maximo; i++){
+    cout << "Matriz final do SUDOKU" << endl << endl;
+    for (int i = 0; i < ordem; i++){
         if(i%tam_quadrante == 0 && i > 0){
             textcolor(15,0);
             for(int j = 0; j < qtd_pontilhado; j++)
                 cout << "-";
-            printf("\n");
+            cout << endl;
         }
-        for(int j = 0; j < maximo; j ++){
+        for(int j = 0; j < ordem; j ++){
             if(j%tam_quadrante == 0 && j > 0){
                 textcolor(15,0);
                 cout << "|";
             }
             textcolor(15,matrizFinal[i][j]-1);
-            printf(" %d ", matrizFinal[i][j]);
+            cout << "  " << matrizFinal[i][j] << "  ";
             textcolor(15,0);
-            printf(" \t ");
+            cout << "\t";
         }
         printf("\n");
     }
@@ -262,7 +260,7 @@ void menu(){
                 matrizAdjacencia = Alocar_matriz_real(qtd_vert);           //aloca matriz
                 zeraMatriz(matrizAdjacencia, qtd_vert);                    //zera matriz
                 monta_matriz_adj(matrizAdjacencia, qtd_vert);              //monta matriz adjacencia
-                graphColoring(matrizAdjacencia, qtd_vert, ordem, pos);     //começa colorir
+                verificaColoracao(matrizAdjacencia, qtd_vert, ordem, pos);     //começa colorir
 
                 system("CLS");
                 break;
