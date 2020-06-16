@@ -91,8 +91,6 @@ bool disponivel(int v, int **_matrizAdjacencia, int qtd_vert, int vertices[], in
 //colore grafo
 bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *vertices, int v, int v_i)
 {
-    cout << vertices[12] << " v = " << v << endl;
-
     if(v == qtd_vert)                                                  //se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
         return true;
 
@@ -100,8 +98,6 @@ bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *verti
         if (disponivel(v, _matrizAdjacencia, qtd_vert, vertices, c)) {     //se seguro
             if(vertices[v] == 0)
                 vertices[v] = c;                                       //posição do vetor recebe a cor
-            else
-                cout << " vertice v " << v << " com cor " << vertices[v] << endl ;
 
             if (coloreGrafo(_matrizAdjacencia,qtd_vert, qtd_cores, vertices, v + 1, v_i) == true){
                 return true;
