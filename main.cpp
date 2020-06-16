@@ -89,8 +89,10 @@ bool disponivel(int v, int **_matrizAdjacencia, int qtd_vert, int vertices[], in
 }
 
 //colore grafo
-bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *vertices, int v)
+bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *vertices, int v, int v_i)
 {
+    cout << vertices[12] << " v = " << v << endl;
+
     if(v == qtd_vert)                                                  //se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
         return true;
 
@@ -98,11 +100,14 @@ bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *verti
         if (disponivel(v, _matrizAdjacencia, qtd_vert, vertices, c)) {     //se seguro
             if(vertices[v] == 0)
                 vertices[v] = c;                                       //posição do vetor recebe a cor
+            else
+                cout << " vertice v " << v << " com cor " << vertices[v] << endl ;
 
-            if (coloreGrafo(_matrizAdjacencia,qtd_vert, qtd_cores, vertices, v + 1) == true){
+            if (coloreGrafo(_matrizAdjacencia,qtd_vert, qtd_cores, vertices, v + 1, v_i) == true){
                 return true;
             }
-            vertices[v] = 0;
+            if(v != v_i)
+                vertices[v] = 0;
         }
     }
     return false;
@@ -120,9 +125,10 @@ bool verificaColoracao(int **_matrizAdjacencia, int qtd_vert, int qtd_cores, int
     vertices = Alocar_vetor_real(qtd_vert);                                                //aloca vetor
     zera_vetor(vertices, qtd_vert);                                                        //zera o vetor
 
+    cout << " posicao inicial " << pos << endl;
     vertices[pos] = 1;
 
-    if (coloreGrafo(_matrizAdjacencia, qtd_vert, qtd_cores, vertices, 0) == false) {         //se retornar falso
+    if (coloreGrafo(_matrizAdjacencia, qtd_vert, qtd_cores, vertices, 0, pos) == false) {         //se retornar falso
         printf("Solucao nao existe");                                                   //printa que nao existe solução
         pausa();
         return false;                                                                   //retorna falso
