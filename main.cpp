@@ -183,11 +183,31 @@ void printSolucao(int **matrizFinal, int maximo)
     //15: amarelo
     //16: branco
 
+    int tam_quadrante = (int)sqrt(maximo);
+    int qtd_pontilhado = 0;
+
+    if(maximo == 4) qtd_pontilhado = 30;
+    else if(maximo == 9) qtd_pontilhado = 70;
+    else if(maximo == 16) qtd_pontilhado = 130;
+
+
     printf("Matriz final do SUDOKU \n \n");
     for (int i = 0; i < maximo; i++){
+        if(i%tam_quadrante == 0 && i > 0){
+            textcolor(15,0);
+            for(int j = 0; j < qtd_pontilhado; j++)
+                cout << "-";
+            printf("\n");
+        }
         for(int j = 0; j < maximo; j ++){
+            if(j%tam_quadrante == 0 && j > 0){
+                textcolor(15,0);
+                cout << "|";
+            }
             textcolor(15,matrizFinal[i][j]-1);
-            printf(" %d  ", matrizFinal[i][j]);
+            printf(" %d ", matrizFinal[i][j]);
+            textcolor(15,0);
+            printf(" \t ");
         }
         printf("\n");
     }
@@ -230,7 +250,7 @@ void menu(){
                 cin >> opcao;
                 system("CLS");
 
-                cout << "DIGITE A POSICAO INICIAL;" << endl;
+                cout << "DIGITE O NUMERO DO VERTICE INICIAL: " << endl;
                 cin >> pos;
 
                 if(opcao == 1){
