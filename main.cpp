@@ -5,12 +5,26 @@
 #include <math.h>
 #include <time.h>
 #include <stdbool.h>
+#include <windows.h>
 
 using namespace std;
 
+
 void printSolucao(int **matrizFinal, int maximo);
 void montaMatrizFinal(int *color, int qtd_vert);
-unsigned int variavel = 0;
+
+typedef enum{BLACK,BLUE,GREEN,CYAN,RED,MAGENTA,BROWN,LIGHTGRAY,DARKGRAY,   /* nome das cores */
+LIGHTBLUE,LIGHTGREEN,LIGHTCYAN,LIGHTRED,LIGHTMAGENTA,YELLOW,WHITE} COLORS;
+
+static int __BACKGROUND = 1;/*BLACK*//*pode ser o numero ou o nome da cor*/
+static int __FOREGROUND = LIGHTGRAY;
+
+void textcolor (int letras, int fundo){/*para mudar a cor de fundo mude o background*/
+    __FOREGROUND = letras;
+    __BACKGROUND = fundo;
+    SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),
+    letras + (__BACKGROUND << 4));
+}
 
 void pausa(){
     cout << "\n\n\n *** ";
@@ -141,26 +155,71 @@ void montaMatrizFinal(int *color, int qtd_vert){//tranforma o vetor na matriz fi
             contador++;
         }
     }
-
-    for(j = 0; j < qtd_vert; j ++){
-        cout << color[j] << " " ;
-    }
-    cout << endl;
-
-
     printSolucao(matrizFinal, maximo);
 }
 
 /* printa o sudoku final */
 void printSolucao(int **matrizFinal, int maximo)
 {
+    //numero:cor
+    //1 : preto
+    //2 : azul
+    //3 : verde
+    //4 : azul esverdeado
+    //5 : vermelho
+    //6 : roxinho
+    //7 : marrom
+    //8 : cinza claro
+    //9 : cinza escuro
+    //10 : azul claro
+    //11: verde luz
+    //12: azul esverdeado claro
+    //13; vermelho claro
+    //14: roxinho claro
+    //15: amarelo
+    //16: branco
+
     printf("Matriz final do SUDOKU \n \n");
     for (int i = 0; i < maximo; i++){
         for(int j = 0; j < maximo; j ++){
-            printf(" %d ", matrizFinal[i][j]);
+            if(matrizFinal[i][j] == 1)
+                textcolor(15,0);
+            else if(matrizFinal[i][j] == 2)
+                textcolor(15,1);
+            else if(matrizFinal[i][j] == 3)
+                textcolor(15,2);
+            else if(matrizFinal[i][j] == 4)
+                textcolor(15,3);
+            else if(matrizFinal[i][j] == 5)
+                textcolor(15,4);
+            else if(matrizFinal[i][j] == 6)
+                textcolor(15,5);
+            else if(matrizFinal[i][j] == 7)
+                textcolor(15,6);
+            else if(matrizFinal[i][j] == 8)
+                textcolor(15,7);
+            else if(matrizFinal[i][j] == 9)
+                textcolor(15,8);
+            else if(matrizFinal[i][j] == 10)
+                textcolor(15,9);
+            else if(matrizFinal[i][j] == 11)
+                textcolor(15,10);
+            else if(matrizFinal[i][j] == 12)
+                textcolor(15,11);
+            else if(matrizFinal[i][j] == 13)
+                textcolor(15,12);
+            else if(matrizFinal[i][j] == 14)
+                textcolor(15,13);
+            else if(matrizFinal[i][j] == 15)
+                textcolor(15,14);
+            else
+                textcolor(0,15);
+
+            printf(" %d  ", matrizFinal[i][j]);
         }
         printf("\n");
     }
+    textcolor(15,0);
     pausa();
 }
 
