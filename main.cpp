@@ -89,29 +89,21 @@ bool isSafe(int v, int **_matrizAdjacencia, int qtd_vert, int color[], int c)//v
 }
 
 //colore grafo
-bool graphColoringUtil(int **_matrizAdjacencia, int qtd_vert, int m,int *color, int v, int pos_i)
+bool graphColoringUtil(int **_matrizAdjacencia, int qtd_vert, int m,int *color, int v)
 {
-    if(v == pos_i){
-        color[v] = 1;
-        v = 0;
-    }
     if(v == qtd_vert)//se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
         return true;
 
-    for (int c = 1; c <= m; c++) {//for para a quantidade de cores
+    for (int c = 1; c <= m; c++) {                             //for para a quantidade de cores
         if (isSafe(v, _matrizAdjacencia, qtd_vert, color, c)) {//se seguro
-            color[v] = c;//posição do vetor recebe a cor
-            if((v + 1) != pos_i){
-                if (graphColoringUtil(_matrizAdjacencia,qtd_vert, m, color, v + 1, pos_i) == true){
-                    return true;
-                }
-                color[v] = 0;
-            }else{
-                if (graphColoringUtil(_matrizAdjacencia,qtd_vert, m, color, v + 2, pos_i) == true){
-                    return true;
-                }
-                color[v] = 0;
+            if(color[v] == 0)
+                color[v] = c;                                  //posição do vetor recebe a cor
+
+            if (graphColoringUtil(_matrizAdjacencia,qtd_vert, m, color, v + 1) == true){
+                return true;
             }
+            color[v] = 0;
+
         }
     }
     return false;
@@ -123,14 +115,17 @@ void zera_vetor(int *vet, int maximo){
         vet[i] = 0;
 }
 
-bool graphColoring(int **_matrizAdjacencia, int qtd_vert, int m, int pos, int pos_i)
+bool graphColoring(int **_matrizAdjacencia, int qtd_vert, int m, int pos)
 {
     int *color;                         //vetor de cores
     color = Alocar_vetor_real(qtd_vert);//aloca vetor
     zera_vetor(color, qtd_vert);        //zera o vetor
 
-    if (graphColoringUtil(_matrizAdjacencia, qtd_vert, m, color, pos, pos_i) == false) {//se retornar falso
+    color[pos] = 1;
+
+    if (graphColoringUtil(_matrizAdjacencia, qtd_vert, m, color, 0) == false) {         //se retornar falso
         printf("Solucao nao existe");                                                   //printa que nao existe solução
+        pausa();
         return false;                                                                   //retorna falso
     }
 
@@ -267,7 +262,7 @@ void menu(){
                 matrizAdjacencia = Alocar_matriz_real(qtd_vert);           //aloca matriz
                 zeraMatriz(matrizAdjacencia, qtd_vert);                    //zera matriz
                 monta_matriz_adj(matrizAdjacencia, qtd_vert);              //monta matriz adjacencia
-                graphColoring(matrizAdjacencia, qtd_vert, ordem, pos, pos);//começa colorir
+                graphColoring(matrizAdjacencia, qtd_vert, ordem, pos);     //começa colorir
 
                 system("CLS");
                 break;
