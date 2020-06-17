@@ -15,6 +15,7 @@ LIGHTBLUE,LIGHTGREEN,LIGHTCYAN,LIGHTRED,LIGHTMAGENTA,YELLOW,WHITE} COLORS;
 static int __BACKGROUND = 1;/*BLACK*//*pode ser o numero ou o nome da cor*/
 static int __FOREGROUND = LIGHTGRAY;
 
+int loop = 0;
 
 void textcolor (int letras, int fundo){/*para mudar a cor de fundo mude o background*/
     __FOREGROUND = letras;
@@ -93,6 +94,7 @@ bool disponivel(int v, int **_matrizAdjacencia, int qtd_vert, int vertices[], in
 //colore grafo
 bool coloreGrafo(int **_matrizAdjacencia, int qtd_vert, int qtd_cores,int *vertices, int v, int v_i)
 {
+    loop ++;
     if(v == qtd_vert)                                                  //se a variavel v de interação for igual a quantidade de vertices, termina a recursividade
         return true;
 
@@ -183,7 +185,7 @@ void printSolucao(int **matrizFinal, int ordem)
     }
     textcolor(15,0);
 
-    cout << " quantidade de chamadas recursivas " << loop << endl;
+    cout << " quantidade de chamadas recursivas: " << loop << endl;
     pausa();
 }
 
@@ -250,7 +252,7 @@ void menu(){
                 int qtd_vert = 0;
                 int ordem = 0;
                 int pos = 0;
-                loop = 0;
+                //loop = 0;
 
                 system("CLS");
                 cout << "Selecione o tamanho da matriz desejada: " << endl;
@@ -274,7 +276,7 @@ void menu(){
                     system("CLS");
                     break;
                 }
-
+                loop = 0;
                 matrizAdjacencia = Alocar_matriz_real(qtd_vert);           //aloca matriz
                 zeraMatriz(matrizAdjacencia, qtd_vert);                    //zera matriz
                 monta_matriz_adj(matrizAdjacencia, qtd_vert);              //monta matriz adjacencia

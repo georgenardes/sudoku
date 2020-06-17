@@ -2,7 +2,7 @@
 1591663685 source:c:\users\leo\desktop\eng comp\7º semestre\grafos\sudoku\main.cpp
 	<iostream>
 
-1592185514 source:c:\users\diogo\documents\faculdade-materias\grafos\sudoku\main.cpp
+1592357267 source:c:\users\diogo\documents\faculdade-materias\grafos\sudoku\main.cpp
 	<iostream>
 	<stdio.h>
 	<conio.h>
@@ -10,6 +10,7 @@
 	<math.h>
 	<time.h>
 	<stdbool.h>
+	<windows.h>
 
 1592354557 source:c:\users\george\desktop\george\grafos\sudoku\main.cpp
 	<iostream>
