@@ -11,3 +11,13 @@
 	<time.h>
 	<stdbool.h>
 
+1592354557 source:c:\users\george\desktop\george\grafos\sudoku\main.cpp
+	<iostream>
+	<stdio.h>
+	<conio.h>
+	<stdlib.h>
+	<math.h>
+	<time.h>
+	<stdbool.h>
+	<windows.h>
+
